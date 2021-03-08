@@ -8,7 +8,27 @@
   </head>
   <body>
     <script>
-      console.log("test");
+      "use strict";
+      //N 정수를 포함하는 배열 A를 받는다
+      // 같은 prototype을 쓰는 오브젝트 배열 N개를 리턴해라.
+      // i번째 object는 A[i] 리턴 필요.
+      // value 메소드 필요
+      function solution(arr) {
+        let Num = function (num) {
+          this.num = num;
+        };
+        Num.prototype.value = function () {
+          return this.num;
+        };
+        let T = [];
+        for (let i = 0; i < arr.length; i++) {
+          T[i] = new Num(arr[i]);
+        }
+        console.log(T[1].value);
+      }
+      let arr = [1, 2, 3, 4, 5];
+
+      solution(arr);
     </script>
   </body>
 </html>
