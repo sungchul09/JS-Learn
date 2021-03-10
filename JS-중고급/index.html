@@ -7,6 +7,18 @@
     <title>Document</title>
   </head>
   <body>
-    <script></script>
+    <script>
+      // 4. 함수 표현식, 함수 호출(), 함수 선언문
+      function book() {
+        var getBook = function () {
+          return "책1";
+        };
+        console.log(getBook());
+        function getBook() {
+          return "책2";
+        }
+      }
+      book();
+    </script>
   </body>
 </html>

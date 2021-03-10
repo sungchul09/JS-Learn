@@ -1,4 +1,4 @@
-### 🎇JS 중고급 START!!
+
 
 ---
 
@@ -548,5 +548,360 @@ book();
 
 
 
+#### L11 - 함수 실행 환경 인식 / 함수 실행 환경 저장 / 내부 프로퍼티
+
+1. 함수 실행 환경 인식
+   * 함수 실행 환경 인식이 필요한 이유는 ? 
+     * 함수가 호출되었을 때 실행될 환경을 알아야 실행 환경에 맞춰 실행할 수 있기 때문
+   * function 키워드를 만나 function 오브젝트를 생성할 떄 실행 환경 설정을 한다.
+   * 설정하는 것은 실행 영역(함수가 속한 Scope (Lexical Scope)), 파라미터, 함수 코드
+2. 함수 실행 환경 저장
+   * function 오브젝트를 생성하고 바로 실행하지 않는다.
+   * 함수가 호출되었을 때 사용할 수 있도록 환경을 저장한다.
+   * 저장하는 위치는 생성한 function 오브젝트이다.
+   * 인식한 환경을 function 오브젝트의 내부 프로퍼티에 {name: value} 형태로 저장한다.
+3. 내부 프로퍼티
+   * 엔진이 내부 처리에 사용하는 프로퍼티. 스펙 표기로 외부에서 사용 불가
+   * [[ ]] 형태.   ( ex. [[Scope]])
 
 
+
+#### L12 - 내부 프로퍼티 분류: 공통 내부 프로퍼티 /  선택적 내부 프로퍼티
+
+---
+
+1. 내부 프로퍼티 분류
+   * 공통 프로퍼티 
+     * 모든 오브젝트에 공통으로 설정되는 프로퍼티
+   * 선택적 프로퍼티
+     * 오브젝트에 따라 선택적으로 설정되는 프로퍼티
+     * 해당되는 오브젝트에만 설정
+2. 공통 내부 프로퍼티
+   * [[Prototype]] : 오브젝트의 prototype   (Object 또는 Null)
+   * [[Class]] : 오브젝트 유형 구분 (String)
+   * [[Extensible]] : 오브젝트에 프로퍼티 추가 가능 여부 (Boolean)
+   * [[Get]] : 이름의 프로퍼티 값 (any)
+   * [[GetOwnProerty]] : 오브젝트 소유의 프로퍼티 디스크립터 속성 (프로퍼티 디스크립터)
+   * [[GetProperty]] : 오브젝트의 프로퍼티 디스크립터 (프로퍼티 디스크립터)
+   * [[Put]] : 프로퍼티 이름으로 프로퍼티 값 설정
+   * [[CanPut]] : 값 설정 가능 여부 (Boolean)
+   * [[HasProperty]] : 프로퍼티의 존재 여부 (Boolean)
+   * [[Delete]] : 오브젝트에서 프로퍼티 삭제 가능 여부 (Boolean)
+   * [[DefaultValue]] : 오브젝트의 디폴트 값 (any)
+   * [[DefinedOwnProperty]] : 프로퍼티 추가, 프로퍼티 값 변경 가능 여부 (Boolean)
+3. 선택적 내부 프로퍼티
+   * [[PrimitiveValue]]: Boolean, Date, Number, String 오브젝트에서만 제공 (프리미티브 값)
+   * [[Construct]]: new 연산자로 호출되며 인스턴스를 생성한다. (Object)
+   * [[Call]]: 함수 호출 (any)
+   * [[HasInstance]]: 지정한 오브젝트로 생성한 인스턴스 여부 (instance of 연산자로 생각하면 쉬움) (Boolean)
+   * [[Scope]]: Function 오브젝트가 실행되는 렉시컬(정적) 환경 (렉시컬 환경)
+   * [[FormalParameters]]: 호출된 함수의 파라미터 이름 리스트 (문자열 리스트)
+   * [[Code]]: 함수에 작성한 JS 코드 설정, 함수가 호출되었을 때 실행 (JS 코드)
+   * [[TargetFunction]]: Function 오브젝트의 bind()에 생성한 타깃 함수 오브젝트 설정 (Object)
+   * [[BoundThis]]: bind()에 바인딩된 this 오브젝트 (any)
+   * [[BoundArguments]]: bind()에 바인딩된 아규먼트 리스트 (리스트)
+   * [[Match]]: 정규표현식의 매치 결과 (매치 결과)
+   * [[ParameterMap]]: 아규먼트 오브젝트와 함수의 파라미터 매핑 (Object)
+
+
+
+#### L13 - 함수 정의 형태: 함수 정의 / 함수 선언문 / 함수 표현식
+
+---
+
+1. 함수 정의 (Function Definition)
+   * 함수 코드가 실행될 수 있도록 JS 문법에 맞게 함수를 작성하는 것
+   * 함수 정의 형태
+     * 함수 선언문(Function Declaration)
+     * 함수 표현식(Function Expression)
+     * new Function(param, body) 문자열로 작성
+
+2. 함수 선언문
+
+   | 구분      | 타입     | 데이터(값)               |
+   | --------- | -------- | ------------------------ |
+   | function  | Function | function 키워드          |
+   | 식별자    | String   | 함수 이름                |
+   | 파라미터  | Any      | 파라미터 리스트 opt      |
+   | 함수 블록 | Object   | {실행 가능 코드 opt}     |
+   | 반환      | Function | 생성한 Function 오브젝트 |
+
+   ```javascript
+   function book(one, two){
+   	return one + ", " + two;
+   };
+   log(book("JS", "DOM"));
+   ```
+
+   * function getBook(title){함수 코드}
+     * function, 함수이름, 블록{} 작성은 필수
+     * 파라미터, 함수 코드는 선택
+   * 엔진이 function 키워드를 만나면 function  오브젝트를 생성하고
+     함수 이름을 function 오브젝트 이름으로 사용
+
+3. 함수 표현식
+
+   ```javascript
+   var getBook = function(title){
+       return title;
+   };
+   getBook("JS책");
+   ```
+
+   * var getBook = function(title){함수 코드}
+     * function 오브젝트를 생성하여 변수에 할당
+     * 변수 이름이 function 오브젝트 이름
+
+   ```javascript
+   var getBook = function inside(value){
+       if(value === 102){
+           return value;
+       };
+       console.log(value);
+       return inside(value+1);
+   };
+   getBook(100);
+   ```
+
+   * 식별자 위치의 함수 이름은 생략 가능
+   * var name = function abc(){} 에서 abc가 식별자 위치의 함수 이름
+     (최근에는 이러한 형태로 안쓴다)
+
+
+
+#### L14 - 엔진 해석 방법: 엔진 해석 순서 / 함수 코드 작성 형태 / 엔진 처리 상태
+
+---
+
+1. 엔진 해석 순서
+
+   * 자바스크립트는 스크립팅 언어다. 
+     스크립팅 언어는 작성된 코드를 위에서부터 한줄씩 해석한다. 하지만!
+
+   * 자바스크립트는 중간에 있는 코드가 먼저 해석될수도있다.
+
+   * 첫번째, 함수 선언문을 순서대로 해석한다.
+
+     function sports(){};
+
+   * 두번째, 표현식을 순서대로 해석한다. (표현식 = 변수 형태로 할당한 것)
+
+     var value = 123;    (정수 표현식?)
+
+     var book = function(){};     (함수 표현식)
+
+2. 함수 코드 작성 형태
+
+   ``` javascript
+   function book(){
+   	debugger;
+       var title = "JS책";
+       function getBook(){
+           return title;
+       };
+       var readBook = function(){};
+       getBook();
+   };
+   
+   book();
+   ```
+
+   * 마지막 줄에서 book 함수 호출 (  book(); )
+   * title 변수 선언 (var title = "JS책"; )
+   * 함수 선언문 작성 (function getBook(){return title;})
+   * 함수 표현식 작성 (var readBook = function(){};)
+
+3. 엔진 처리 상태
+
+   ``` javascript
+   function book(){
+   	console.log(title);
+       console.log(readBook);
+       console.log(getBook);
+       debugger;
+       var title = "JS책";
+       function getBook(){
+           return title;
+       }
+       var readBook = function(){};
+       getBook();
+   }
+   book();
+   
+   //실행결과
+   // undefined
+   // undefined
+   // function getBook(){ return title; }
+   ```
+
+   * undefined도 해석을했다는 뜻이다. 
+     해석을 했다라는 뜻은 Scope에 식별자해결을위해 등록했다는 뜻이다.
+   * 함수 선언문은 값이 전체가 등록되어있고,
+     title과 readBook은 이름은 정상적으로 등록되어있는데 값은 아니다라는 것.
+   * 자바스크립트는 프로퍼티를 등록할때 이름만 있으면 값을 자동적으로 undefined로 설정해버린다. 그래야 name, value의 구조가 맞기 때문이다.
+   * 프로퍼티로 등록하는데 값이없고 이름만등록할수는 없다. 그럴때 undefined를 사용한다. 시멘틱 그대로 defined 하지 않았다는 뜻.
+   * 이것이 바로 자바스크립트 엔진이 프로퍼티를 등록하는 기준이다.
+
+
+
+#### L15 - 함수 코드 해석 순서
+
+---
+
+1. 함수 코드 해석 순서
+
+   ``` javascript
+   function book(){
+       debugger;
+       var title = "JS책";
+       function getBook(){
+           return title;
+       };
+       var readBook = function(){};
+       getBook();
+   };
+   book();
+   ```
+
+   * 함수 선언문 해석
+     * function getBook(){};
+
+   * 변수 초기화
+     * var title = undefined;
+     * var readBook = undefined;
+   * 코드 실행
+     * var title = "JS책";
+     * var readBook = function(){};
+     * getBook();
+
+
+
+#### L16 - Hoisting / 함수 앞에서 호출 
+
+---
+
+1. 호이스팅
+
+   ``` javascript
+   var result = book();
+   console.log(result);
+   
+   function book(){
+   	return "호이스팅";
+   };
+   book = function(){
+       return "함수 표현식";
+   }
+   
+   [실행 결과]
+   >> 호이스팅
+   ```
+
+   * 함수 선언문은 초기화 단계에서 function 오브젝트를 생성하므로 어디에서도 함수를 호출할 수 있다.
+   * 함수 앞에서 호출 가능하다. (호이스팅)
+   * 초기화 단계에서 값이 있으면 초기화하지 않는다.
+     (book이 이미 있으므로 undefined 하지않는다.)
+
+   2. 코딩 연습
+
+   ``` javascript
+   // 1. 함수 선언문, 함수 호출(), 함수 선언문
+   function book(){
+       function getBook(){
+           return "책1";
+       };
+       console.log(getBook());
+       function getBook(){
+           return "책2";
+       };
+   };
+   book();
+   
+   // 2. 함수 표현식, 함수 호출(), 함수 표현식
+   function book(){
+       var getBook = function(){
+       	return "책1";
+       };
+       console.log(getBook());
+       var getBook = function(){
+           return "책2";
+       }    
+   }
+   book();
+   
+   // 3. 함수 선언문, 함수 호출(), 함수 표현식
+   function book(){
+   	function getBook(){
+           return "책1";
+       }
+       console.log(getBook());
+       var getBook = function(){
+   		return "책2";
+       }
+   }
+   book();
+   
+   // 4. 함수 표현식, 함수 호출(), 함수 선언문
+   function book(){
+       var getBook = function(){
+       	return "책1";
+       };
+       console.log(getBook());
+       function getBook(){
+           return "책2";
+       }    
+   }
+   book();
+   
+   ```
+
+   
+
+#### L16 - 오버로딩
+
+---
+
+1. 오버로딩
+
+	``` javascript
+   function book(one){};
+   function book(one, two){};
+   function book(one, two, three){};
+   
+   book(one, two);
+   ```
+   
+   * 함수 이름이 같더라도 파라미터 수 또는 값 타입이 다르면 각각 존재
+   * 함수를 호출하면 파라미터 수와 값 타입이 같은 함수가 호출된다.
+   * JS는 오버로딩을 지원하지 않는다.
+   * JS는 파라미터 수와 값 타입을 구분하지 않고 {name: value} 형태로 저장하기 때문이다.
+   
+2. 오버로딩 미지원: 함수 선언문 초기화
+
+   ``` javascript
+   function book(){
+   	function getBook(){
+   		return "책1";
+   	};
+   	getBook();
+   	function getBook(){
+   		return "책2";
+   	};
+   };
+   book();
+   ```
+
+   * 마지막 줄에서 book() 함수 호출시
+   * function getBook(){return "책1";}을 만나 getBook 오브젝트를 생성
+   * getBook()호출 하지 않고 아래로 이동
+   * function getBook(){return "책2";}를 만나 getBook 오브젝트를 생성
+   * 위의 오브젝트와 이름이 같으므로 마지막에 만났던 getBook 오브젝트로 대체된다.
+   * {name: value} 형태에서 name이  같으므로 value가 변경된다.
+
+3. 오버로딩 미지원: 변수 초기화
+
+   * getBook() 함수를 호출하면, return "책2"의 getBook 함수가 실행된다.
+   * 함수 이름이 같으므로 위의 함수가 아래 함수로 대체되었기 때문.
+   * "책2"가 실행결과에 출력된다.
+
+✨**자바스크립트는 오버로딩을 지원하지않는다 {key:value}, {name:value} 의 프로퍼티인것이다. 이것이 자바스크립트의 가장 기본이되는 구조이다.**
