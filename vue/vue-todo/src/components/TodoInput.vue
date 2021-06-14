@@ -16,28 +16,28 @@
   </div>
 </template>
 <script>
-import Modal from './common/Modal.vue';
+import Modal from "./common/Modal.vue";
 
 export default {
   data: function() {
     return {
-      newTodoItem: '',
+      newTodoItem: "",
       showModal: false,
     };
   },
   methods: {
     addTodo: function() {
-      if (this.newTodoItem !== '') {
-        this.$emit('addTodoItem', this.newTodoItem);
+      if (this.newTodoItem !== "") {
+        //this.$emit('addTodoItem', this.newTodoItem);
+        const text = this.newTodoItem.trim();
+        this.$store.commit("addOneItem", text);
         this.clearInput();
       } else {
         this.showModal = !this.showModal;
       }
     },
     clearInput: function() {
-      // 수정반영좀요
-
-      this.newTodoItem = '';
+      this.newTodoItem = "";
     },
   },
   components: {
