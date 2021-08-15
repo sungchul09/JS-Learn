@@ -2,7 +2,7 @@
 
 이 리포지토리는 인프런 웹팩 온라인 강의의 수업 리포지토리입니다.
 
-## 개발 환경 설정
+## 개발 환경 설정 test
 
 - [Chrome](https://www.google.com/intl/ko/chrome/)
 - [Git](https://git-scm.com/downloads)
